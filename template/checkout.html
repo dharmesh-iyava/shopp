@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="shadow bg-white p-3 mt-5">
+                <a href="{% url 'cart' %}" class="btn btn-outline-secondary py-2"><i class="fa fa-arrow-left"> Back To
+                        Cart</i></a>
+                <hr>
+                <h4>Order Summary:</h4>
+                <table class="table mt-4">
+                    <tr>
+                        <th></th>
+                        <th>Product</th>
+                        <th class="pl-5">Name</th>
+                        <th class="pl-5">Quantity</th>
+                        <th class="pl-5">Total</th>
+                    </tr>
+                    {% for i in object.items.all %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><img src="{{i.item.image.url}}" class="rounded" style="height: 50px;width: 50px;"></td>
+                        <td class="text-center text-capitalize"><b>{{i.item.name}}</b></td>
+                        <td class="text-center"><b>*{{i.quantity}}</b></td>
+                        <td class="text-center"><b>Rs.{{i.get_total_item_price|floatformat:2}}/-</b></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center badgr badge-secondary"><b>Your Cart Is Empty...</b></td>
+                    </tr>
+                    {%endfor%}
+                </table>
+                <hr>
+                <h5>Items : {{object.get_total_count}}</h5>
+                <h5>Total : Rs.{{object.get_total|floatformat:2}}/-</h5>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="shadow p-3 bg-white mt-5">
+                <form action="{% url 'checkout'%}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" name="f_name" class="form-control" placeholder="Name..."
+                                value="{{user.first_name}}">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="email" class="form-control" placeholder="Email..."
+                                value="{{user.email}}">
+                        </div>
+                    </div><br>
+                    <hr>
+                    <h4>Shipping Information:</h4><br>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" name="address" class="form-control"
+                                placeholder="House No, Street Address...">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="city" class="form-control" placeholder="City...">
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" name="state" class="form-control" placeholder="State...">
+                        </div>
+                        <div class="col-6">
+                            <input type="text" name="pincode" class="form-control" placeholder="Pin Code...">
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="text" name="phone" class="form-control" placeholder="Mobile Number...">
+                        </div>
+                    </div>
+                    <br>
+                    <p class="text-center bg-secondary text-white rounded p-2 mx-5">The Payment Method is Only Cash On
+                        Delivery
+                    </p>
+                    <button class="btn btn-success btn-block mt-2">Place Order...</button>
+                    <!-- <a href="" class="btn btn-success btn-block">Place
+                        Order...</a> -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

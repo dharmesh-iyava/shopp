@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="shadow bg-white p-4">
+
+        <i class="fa fa-check-circle"></i>
+        <h1 class="text-center mt-4 text-success text-capitalize">Congratulations {{user.first_name}}</h1>
+        <h2 class="text-center mt-4 text-success">Your Order is Confirmed...</h2>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary ssb"><i class="fa fa-arrow-left"> Continue
+                Shopping</i></a>
+        <hr>
+    </div>
+</div>
+{% endblock%}

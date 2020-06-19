@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center mt-5">Order Summary</h1>
+    <hr class="mx-auto w-25">
+    <div class="shadow-lg bg-white mt-5 p-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary py-2"><i class="fa fa-arrow-left"> Back To
+                Home</i></a>
+        <a href="{% url 'checkout'%}" class="btn btn-success py-1 px-3 float-right">Checkout
+            <i class="fa fa-arrow-right"></i></a>
+        <!-- <hr> -->
+        <table class="table mt-4">
+            <tr>
+                <th style="font-size: 1.5rem;">Items : {{object.get_total_count}}</th>
+                <th style="font-size: 1.5rem;">Total : Rs.{{object.get_total|floatformat:2}}/-</th>
+            </tr>
+        </table>
+        <!-- <hr> -->
+    </div>
+    <div class="shadow-lg bg-white mt-5 p-4">
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>Product </th>
+                <th>Name </th>
+                <th>Price </th>
+                <th>Quantity </th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            {% for i in object.items.all %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td><img src="{{i.item.image.url}}" alt="" class="img-fluid rounded" style="width: 80px;height:80px;">
+                </td>
+                <td class="text-capitalize">{{i.item.name}}</td>
+                <td>Rs.{{i.item.price|floatformat:2}}/-</td>
+                <td><a href="{% url 'remove_single_item_from_cart' i.item.slug %}"><i class="fa fa-minus mr-2 ml-1"
+                            style="color: black;"></i></a>{{i.quantity}}<a href="{% url 'add_to_cart' i.item.slug %}"><i
+                            class="fa fa-plus ml-2" style="color: black;"></i></a>
+                </td>
+                <td>Rs.{{i.get_total_item_price|floatformat:2}}/-</td>
+                <td><a href="{% url 'remove_from_cart' i.item.slug %}"><i class="fa fa-trash"
+                            style="color: red;font-size:1.2rem;"></a></i></td>
+                {% empty %}
+            <tr>
+                <td colspan="6" class="text-center badgr badge-secondary"><b>Your Cart Is Empty..</b></td>
+            </tr>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

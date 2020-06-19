@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<!-- -----------------------login modal--------------------------------- -->
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" class="form-control" name="username" placeholder="Username ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" class="form-control" name="password" placeholder="Password ...">
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Login</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'reset_password' %}" class="btn btn-outline-secondary">Forgot Password?</a>
+                <a href="" data-toggle="modal" data-target="#exampleModalLong1" data-dismiss="modal"
+                    class="btn btn-outline-secondary">Don't Have Any Account?</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- --------------------------------------register modal---------------------------------- -->
+<div class="modal fade" id="exampleModalLong1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Register</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'register' %}" method="POST">
+                    {% csrf_token%}
+                    <div class="form-group">
+                        <label>First Name:</label>
+                        <input type="text" class="form-control" name="first_name" placeholder="First Name ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name:</label>
+                        <input type="text" class="form-control" name="last_name" placeholder="Last Name ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" class="form-control" name="username" placeholder="Username ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" class="form-control" name="email" placeholder="Email ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" class="form-control" name="password1" placeholder="Password ...">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password:</label>
+                        <input type="password" class="form-control" name="password2" placeholder="Confirm Password ...">
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Register</button>
+                    <a href="" class="btn btn-outline-secondary float-right px-5" data-toggle="modal"
+                        data-target="#exampleModalLong" data-dismiss="modal">Login</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- -------------------------------------------End Register--------------------------- -->
+<!-- ------------------------------Product Detail-------------------------------------------------- -->
+
+<!-- Modal -->
+<!-- <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container mt-5 mb-5">
+                    <div class="shadow-lg p-4">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <img src="{{object.image.url}}" alt="" class="img-fluid rounded"
+                                    style="height: 450px;width:100%;">
+                            </div>
+                            <div class="col-lg-7 mt-4">
+                                <p class="badge badge-success p-2">{{object.get_label_display}}</p>
+                                <h2 class="text-capitalize">{{object.name}}</h2>
+                                <h5 class="mt-4">Price : Rs.{{object.price}}/-</h5>
+                                <h6 class="mt-4">Description :</h6>
+                                <p class="mt-2 text-capitalize">{{object.description}}</p>
+
+                                <a href="" class="btn btn-success px-5 mt-4 "> Buy Now</a>
+                                <a href="" class="btn btn-outline-secondary px-5 mt-4 ml-3">Add To Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- -------------------------------------------End Product Detail-------------------------------- -->
+
+{% if user.is_authenticated %}
+<div class="container">
+    <div class="row">
+        {% for i in object_list %}
+        <div class="col-lg-3 col-md-6">
+            <div class="box bg-light p-3 mt-4">
+                <img src="{{i.image.url}}" alt="" class="img-fluid rounded" style="height: 300px;width:100%;">
+                <hr>
+                <p class="badge badge-success p-2 float-right mt-2">{{i.get_label_display}}</p>
+                <h5 class="text-capitalize">{{i.name}}</h5>
+
+                <h6 class="pt-1">Price : Rs.{{i.price|floatformat:2}}/-</h6>
+                <a href="{{ i.get_absolute_url }}" class="btn btn-outline-secondary btn-block mt-4">Explore...</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% if is_paginated %}
+<nav aria-label="Page navigation example" style="margin-left: 45%;">
+    <div class="container mt-5">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            {% endif %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}">{{page_obj.number}}</a></li>
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+{% endif %}
+
+
+{% else %}
+<div class="hd">
+    <h1 class="text-center" style="font-size: 4rem;">Shopp</h1>
+    <h5 class="text-center pt-1" style="font-size: 2rem;">Choose Us For Your Fashion</h5>
+    <h4 class="text-center" style="font-size: 2rem;padding-top:3%;">Please...<b class="badge badge-secondary">Login</b>
+        For Grab The Fashion</h4>
+</div>
+<div class="container-fluid mt-5">
+    <div class="row bg-light p-3">
+        <div class="col-lg-7 mt-4">
+            <h1 class="text-center mt-3" style="text-decoration: underline;">Shopp</h1>
+            <p class="text-capitalize mt-5" style="text-indent: 40px;">Fashion brands face stif competition online.
+                From large, established brands like Louis Vuitton to smaller brands like Verge Girl, fashion ecommerce
+                sites are all vying for shoppers’ attention. Regardless of their size or niche, the best fashion brands
+                have a few things in common. Fashion brands face stiff competition online.From large, established brands
+                like Louis Vuitton to
+                smaller brands like Verge Girl, fashion ecommerce sites are all vying for shoppers’ attention.
+                Regardless of their size or niche, the best fashion brands have a few things in common.
+                Fashion brands face stiff competition online.From large, established brands like Louis Vuitton to
+                smaller brands like Verge Girl, fashion ecommerce
+                sites are all vying for shoppers’ attention. Regardless of their size or niche, the best fashion brands
+                have a few things in common.</p>
+        </div>
+        <div class="col-lg-5 mt-5">
+            <img src="{% static 'image/img-3.jpg' %}" alt="" class="img-fluid rounded">
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
